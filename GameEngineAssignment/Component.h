@@ -11,5 +11,5 @@ public:
     int GetComponentId() const;
 
 private:
-    int id; // Member variable to store the component's ID
+    int id;
 };

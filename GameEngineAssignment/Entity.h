@@ -3,7 +3,7 @@
 #include <list>
 #include <string>
 
-class Component; // Forward declaration of the Component class
+class Component;
 
 class Entity {
 public:
@@ -13,12 +13,12 @@ public:
     void Initialize();
     void Destroy();
     void Update();
-    void Load(const std::string& entitySettingsFile); // Add a Load method for loading entity-specific data
+    void Load(const std::string& entitySettingsFile);
 
     void AddComponent(Component* component);
     void RemoveComponent(Component* component);
     const std::string& GetName() const;
 
 private:
-    std::string name; // Member variable to store the name of the entity
+    std::string name;
 };

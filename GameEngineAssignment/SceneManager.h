@@ -2,7 +2,7 @@
 
 #include <list>
 
-class Scene; // Forward declaration of the Scene class
+class Scene;
 
 class SceneManager {
 public:

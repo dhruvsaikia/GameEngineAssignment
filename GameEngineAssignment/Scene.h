@@ -2,7 +2,7 @@
 #include <string>
 #include <list>
 
-class Entity; // Forward declaration of the Entity class
+class Entity;
 
 class Scene {
 public:
