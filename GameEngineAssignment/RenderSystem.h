@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "json.hpp"
 
 class RenderSystem {
 public:
@@ -10,7 +11,8 @@ public:
     void Initialize();
     void Destroy();
     void Update();
-    void Load(const std::string& renderSettingsFile);
+    void Initialize(json::JSON& document);
+    void Load(json::JSON& document);
 
 private:
     std::string name;

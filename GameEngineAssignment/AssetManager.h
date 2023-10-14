@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
-
 class AssetManager {
 public:
     AssetManager();
@@ -10,5 +8,5 @@ public:
     void Initialize();
     void Destroy();
     void Update();
-    void Load(const std::string& assetSettingsFile);
+    void Load();
 };

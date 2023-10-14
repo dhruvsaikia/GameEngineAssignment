@@ -1,8 +1,8 @@
 #pragma once
 
 #include <list>
-
-class Scene;
+#include "Scene.h"
+#include "json.hpp" 
 
 class SceneManager {
 public:
@@ -15,5 +15,9 @@ public:
 
     void AddScene(Scene* scene);
     void RemoveScene(Scene* scene);
-    void Load();
+
+    void LoadScenes(json::JSON& document);
+
+private:
+    std::list<Scene*> scenes;
 };

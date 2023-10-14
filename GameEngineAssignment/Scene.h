@@ -1,6 +1,7 @@
 #pragma once
-#include <string>
+
 #include <list>
+#include <string>
 
 class Entity;
 
@@ -16,4 +17,8 @@ public:
 
     void AddEntity(Entity* entity);
     void RemoveEntity(Entity* entity);
+
+private:
+    std::string name;
+    std::list<Entity*> entities; 
 };

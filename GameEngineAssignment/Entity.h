@@ -2,8 +2,8 @@
 
 #include <list>
 #include <string>
-
-class Component;
+#include <algorithm>
+#include "Component.h"
 
 class Entity {
 public:
@@ -21,4 +21,5 @@ public:
 
 private:
     std::string name;
+    std::list<Component*> components;
 };

@@ -2,26 +2,26 @@
 #include <iostream>
 
 AssetManager::AssetManager() {
-    std::cout << "AssetManager Created" << std::endl;
+    std::cout << "AssetManager Create" << std::endl;
 }
 
 AssetManager::~AssetManager() {
     Destroy();
-    std::cout << "AssetManager Destroyed" << std::endl;
+    std::cout << "AssetManager Destructor" << std::endl;
 }
 
 void AssetManager::Initialize() {
-    Load("AssetSettings.json");
-    std::cout << "AssetManager Initialized" << std::endl;
+    std::cout << "AssetManager Initialize" << std::endl;
 }
 
 void AssetManager::Destroy() {
-    std::cout << "AssetManager Destroyed" << std::endl;
+    std::cout << "AssetManager Destroy" << std::endl;
 }
 
 void AssetManager::Update() {
+    std::cout << "AssetManager Update" << std::endl;
 }
 
-void AssetManager::Load(const std::string& assetSettingsFile) {
-    std::cout << "Loading asset settings from: " << assetSettingsFile << std::endl;
+void AssetManager::Load() {
+    std::cout << "AssetManager Load" << std::endl;
 }

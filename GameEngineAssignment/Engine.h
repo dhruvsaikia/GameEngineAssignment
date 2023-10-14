@@ -3,7 +3,7 @@
 #include "InputManager.h"
 #include "AssetManager.h"
 #include "SceneManager.h"
-
+#include "json.hpp"
 #include <string>
 
 class Engine {
@@ -21,4 +21,5 @@ private:
     InputManager* inputManager;
     AssetManager* assetManager;
     SceneManager* sceneManager;
+    json::JSON jsonData;
 };
