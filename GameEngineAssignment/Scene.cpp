@@ -4,20 +4,19 @@
 #include <iostream>
 #include <fstream>
 
-Scene::Scene() {
-    std::cout << "Scene Created" << std::endl;
+Scene::Scene(const std::string& name) : name(name) {
+    std::cout << "Scene '" << name << "' Created" << std::endl; 
 }
 
 Scene::~Scene() {
-    Destroy();
-    std::cout << "Scene Destructor" << std::endl;
+    std::cout << "Scene '" << name << "' Destructor" << std::endl; 
 }
 
 void Scene::Initialize() {
+    std::cout << "Scene '" << name << "' Initialize" << std::endl;
     for (Entity* entity : entities) {
         entity->Initialize();
     }
-    std::cout << "Scene Initialized" << std::endl;
 }
 
 void Scene::Destroy() {
@@ -35,25 +34,18 @@ void Scene::Update() {
     }
 }
 
-void Scene::Load(const std::string& sceneSettingsFile) {
-    std::cout << "Loading scene settings from: " << sceneSettingsFile << std::endl;
+void Scene::Load(const json::JSON& sceneData) {
+    std::cout << "Scene Load" << std::endl;
 
-    std::ifstream inputFile(sceneSettingsFile);
-    if (!inputFile.is_open()) {
-        std::cerr << "Failed to open " << sceneSettingsFile << std::endl;
-        return;
-    }
-
-    std::string fileContent(
-        (std::istreambuf_iterator<char>(inputFile)),
-        std::istreambuf_iterator<char>()
-    );
-
-    json::JSON document = json::JSON::Load(fileContent);
-    if (document.hasKey("Entities")) {
-        for (auto& entityData : document["Entities"].ArrayRange()) {
-            Entity* newEntity = new Entity(entityData["Name"].ToString());
-            entities.push_back(newEntity);
+    if (sceneData.hasKey("Entities")) {
+        auto& entitiesData = const_cast<json::JSON&>(sceneData)["Entities"];
+        for (auto& entityData : entitiesData.ArrayRange()) {
+            if (entityData.hasKey("name")) {
+                std::string entityName = entityData["name"].ToString();
+                Entity* newEntity = new Entity(entityName);
+                newEntity->Load(entityData);
+                entities.push_back(newEntity);
+            }
         }
     }
 }

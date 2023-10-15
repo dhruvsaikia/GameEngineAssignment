@@ -16,8 +16,8 @@ public:
     void AddScene(Scene* scene);
     void RemoveScene(Scene* scene);
 
-    void LoadScenes(json::JSON& document);
-
+    void Load(json::JSON& document);
+    const std::list<Scene*>& GetScenes() const { return scenes; }
 private:
     std::list<Scene*> scenes;
 };

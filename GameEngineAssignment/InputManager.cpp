@@ -2,11 +2,9 @@
 #include <iostream>
 
 InputManager::InputManager() {
-    std::cout << "InputManager Created" << std::endl;
 }
 
 InputManager::~InputManager() {
-    Destroy();
     std::cout << "InputManager Destroyed" << std::endl;
 }
 
@@ -19,4 +17,9 @@ void InputManager::Destroy() {
 }
 
 void InputManager::Update() {
+    std::cout << "InputManager Updated" << std::endl;
+}
+
+void InputManager::Load() {
+    std::cout << "InputManager Load" << std::endl;
 }

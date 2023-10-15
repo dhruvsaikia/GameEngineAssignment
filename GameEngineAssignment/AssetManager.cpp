@@ -2,11 +2,9 @@
 #include <iostream>
 
 AssetManager::AssetManager() {
-    std::cout << "AssetManager Create" << std::endl;
 }
 
 AssetManager::~AssetManager() {
-    Destroy();
     std::cout << "AssetManager Destructor" << std::endl;
 }
 

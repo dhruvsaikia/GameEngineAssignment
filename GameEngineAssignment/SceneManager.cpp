@@ -4,11 +4,9 @@
 #include <iostream>
 
 SceneManager::SceneManager() {
-    std::cout << "SceneManager Created" << std::endl;
 }
 
 SceneManager::~SceneManager() {
-    Destroy();
     std::cout << "SceneManager Destructor" << std::endl;
 }
 
@@ -44,16 +42,17 @@ void SceneManager::RemoveScene(Scene* scene) {
     delete scene;
 }
 
-void SceneManager::LoadScenes(json::JSON& document) {
-    if (document.hasKey("SceneManager")) {
-        json::JSON sceneSettings = document["SceneManager"];
+void SceneManager::Load(json::JSON& jsonData) {
+    std::cout << "SceneManager Load" << std::endl;
+    if (jsonData.hasKey("SceneManager")) {
 
-        for (auto& sceneData : sceneSettings.ArrayRange()) {
+        for (auto& sceneData : jsonData["SceneManager"].ArrayRange()) {
+            std::string sceneName = sceneData.hasKey("name") ? sceneData["name"].ToString() : "Unnamed Scene";
+            Scene* newScene = new Scene(sceneName);
             if (sceneData.hasKey("SceneFile")) {
-                Scene* newScene = new Scene();
                 newScene->Load(sceneData["SceneFile"].ToString());
-                scenes.push_back(newScene);
             }
+            scenes.push_back(newScene);
         }
     }
 }

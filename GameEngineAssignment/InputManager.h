@@ -8,4 +8,5 @@ public:
     void Initialize();
     void Destroy();
     void Update();
+    void Load();
 };

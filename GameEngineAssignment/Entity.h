@@ -4,6 +4,7 @@
 #include <string>
 #include <algorithm>
 #include "Component.h"
+#include "json.hpp"
 
 class Entity {
 public:
@@ -13,7 +14,7 @@ public:
     void Initialize();
     void Destroy();
     void Update();
-    void Load(const std::string& entitySettingsFile);
+    void Load(const json::JSON& entityData);
 
     void AddComponent(Component* component);
     void RemoveComponent(Component* component);

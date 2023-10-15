@@ -1,4 +1,5 @@
 #pragma once
+#include "json.hpp"
 
 class Component {
 public:
@@ -9,6 +10,7 @@ public:
     void Destroy();
     void Update();
     int GetComponentId() const;
+    void Load(json::JSON& componentData);
 
 private:
     int id;

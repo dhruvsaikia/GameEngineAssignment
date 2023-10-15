@@ -1,13 +1,13 @@
 #include "Entity.h"
 #include "Component.h"
 #include <iostream>
+#include "json.hpp"
 
 Entity::Entity(const std::string& name) : name(name) {
-    std::cout << "Entity '" << name << "' Created" << std::endl;
+    std::cout << "Entity Create" << std::endl;
 }
 
 Entity::~Entity() {
-    Destroy();
     std::cout << "Entity '" << name << "' Destructor" << std::endl;
     for (auto comp : components) {
         delete comp;
@@ -16,7 +16,7 @@ Entity::~Entity() {
 }
 
 void Entity::Initialize() {
-    std::cout << "Entity '" << name << "' Initialized" << std::endl;
+    std::cout << "Entity " << name << " Initialize" << std::endl;
     for (auto comp : components) {
         comp->Initialize();
     }
@@ -27,13 +27,26 @@ void Entity::Destroy() {
 }
 
 void Entity::Update() {
+    std::cout << "Entity " << name << " Update" << std::endl;
     for (auto comp : components) {
         comp->Update();
     }
 }
 
-void Entity::Load(const std::string& entitySettingsFile) {
-    std::cout << "Loading entity settings from: " << entitySettingsFile << std::endl;
+void Entity::Load(const json::JSON& entityData) {
+    std::cout << "Entity Load" << std::endl;
+
+    if (entityData.hasKey("Components")) {
+        auto& components = const_cast<json::JSON&>(entityData)["Components"];
+        for (auto& componentData : components.ArrayRange()) {
+            if (componentData.hasKey("id")) {
+                int id = componentData["id"].ToInt();
+                Component* newComponent = new Component(id);
+                newComponent->Load(const_cast<json::JSON&>(componentData));
+                this->components.push_back(newComponent);
+            }
+        }
+    }
 }
 
 void Entity::AddComponent(Component* component) {

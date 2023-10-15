@@ -8,35 +8,45 @@
 #include <fstream>
 #include "json.hpp"
 
-Engine::Engine() : renderSystem(nullptr), inputManager(nullptr), assetManager(nullptr), sceneManager(nullptr) {
-    std::cout << "Engine Created" << std::endl;
+Engine::Engine() {
+    std::cout << "Engine Create" << std::endl;  
+
+    inputManager = new InputManager();
+    std::cout << "InputManager Create" << std::endl;  
+    assetManager = new AssetManager();
+    std::cout << "AssetManager Create" << std::endl;  
+    sceneManager = new SceneManager();
+    std::cout << "SceneManager Create" << std::endl;  
+    renderSystem = new RenderSystem();
+    std::cout << "RenderSystem Create" << std::endl;  
 }
 
 Engine::~Engine() {
-    Destroy();
     std::cout << "Engine Destructor" << std::endl;
 }
 
 void Engine::Initialize() {
     std::cout << "Engine Initialize" << std::endl;
     Load("GameSettings.json");
+    std::cout << "Engine Loaded" << std::endl;
 
-    renderSystem = new RenderSystem();
-    renderSystem->Initialize(jsonData);
+    inputManager->Load();
+    assetManager->Load();
+    sceneManager->Load(jsonData);
+    renderSystem->Initialize(jsonData);  
 
-    inputManager = new InputManager();
-    inputManager->Initialize();
+    for (auto& sceneData : jsonData["SceneManager"].ArrayRange()) {
+        for (auto& scene : sceneManager->GetScenes()) {
+            scene->Load(sceneData);
+            scene->Initialize();  
+        }
+    }
 
-    assetManager = new AssetManager();
-    assetManager->Initialize();
+    inputManager->Initialize(); 
+    assetManager->Initialize();  
+    sceneManager->Initialize();  
 
-    sceneManager = new SceneManager();
-    sceneManager->Initialize();
 
-    // Load game level from JSON file
-    sceneManager->LoadScenes(jsonData); 
-
-    std::cout << "Engine Initialized" << std::endl;
 }
 
 void Engine::Destroy() {
@@ -69,23 +79,19 @@ void Engine::Destroy() {
 
 void Engine::GameLoop() {
     for (int i = 0; i < 5; i++) {
-        std::cout << "======== Engine Cycle " << i + 1 << " Commence ========" << std::endl;
+        std::cout << "======== Engine Loop " << i + 1 << " Start ========" << std::endl;  
 
-        std::cout << "Engine Cycle Update" << std::endl;
-        renderSystem->Update();
+        std::cout << "Engine Loop Update" << std::endl; 
         inputManager->Update();
         assetManager->Update();
         sceneManager->Update();
+        renderSystem->Update();
 
-        std::cout << "======== Engine Cycle " << i + 1 << " Complete ========" << std::endl;
     }
-    std::cout << "\n## Start Cleanup" << std::endl;
+    std::cout << "\nBegin Deletion" << std::endl; 
 }
 
 void Engine::Load(const std::string& settingsFile) {
-    std::cout << "Engine Load" << std::endl;
-    std::cout << "Loading game settings from: " << settingsFile << std::endl;
-
     std::ifstream inFile(settingsFile);
     if (!inFile.is_open()) {
         std::cerr << "Error: Unable to open settings file: " << settingsFile << std::endl;
@@ -95,5 +101,12 @@ void Engine::Load(const std::string& settingsFile) {
     std::string content((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
 
     jsonData = json::JSON::Load(content);
-    std::cout << "Engine Loaded" << std::endl;
+
+    if (jsonData.hasKey("SceneManager")) {
+        for (auto& sceneData : jsonData["SceneManager"].ArrayRange()) {
+            Scene* scene = new Scene(sceneData["name"].ToString());
+            scene->Load(sceneData);  
+            sceneManager->AddScene(scene);
+        }
+    }
 }

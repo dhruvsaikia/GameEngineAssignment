@@ -2,23 +2,23 @@
 
 #include <list>
 #include <string>
-
-class Entity;
+#include "Entity.h" 
+#include "json.hpp"  
 
 class Scene {
 public:
-    Scene();
+    Scene(const std::string& name);  
     ~Scene();
 
     void Initialize();
     void Destroy();
     void Update();
-    void Load(const std::string& sceneSettingsFile);
+    void Load(const json::JSON& sceneData);
 
     void AddEntity(Entity* entity);
     void RemoveEntity(Entity* entity);
 
 private:
     std::string name;
-    std::list<Entity*> entities; 
+    std::list<Entity*> entities;
 };
